@@ -10,11 +10,10 @@
   <ul id="aqi-list">
 <!--   
     <li>第一名：福州（样例），10</li>
-  	<li>第二名：福州（样例），10</li> -->
+    <li>第二名：福州（样例），10</li> -->
   </ul>
 
 <script type="text/javascript">
-
 var aqiData = [
   ["北京", 90],
   ["上海", 50],
@@ -23,31 +22,43 @@ var aqiData = [
   ["成都", 90],
   ["西安", 100]
 ];
-
 (function () {
-
   /*
   在注释下方编写代码
   遍历读取aqiData中各个城市的数据
   将空气质量指数大于60的城市显示到aqi-list的列表中
   */
-  var len = aqiData.length;
+  
   var list = document.getElementById("aqi-list");
-  var str="";
-  var j = 1;
-  for(var i = 0; i<len; i++){
-    if(aqiData[i][1] > 60){
-      //return '<li>第一名：' + aqiData[i][0] + "，" + aqiData[i][1] + "</li>"
-      //console.log("<li>第一名：" + aqiData[i][0] + "，" + aqiData[i][1] + "</li>")
-      str += "<li>第" + j + "名：" + aqiData[i][0] + "，" + aqiData[i][1] + "</li>";
-      j++;
+  var newData = aqiData.filter(function(data){
+    return data[1] > 60;
+  }).sort(function (num1,num2){
+    return num2[1]-num1[1];
+  });
+  var len = newData.length;
+  //console.log(newData[0])
+
+    /*进行li的拼接*/
+    var str="";
+    var j = 1;
+    for(var i = 1; i<=len; i++){
+        str += "<li>第" + i + "名：" + newData[i-1] + "</li>";
     }
-  }
-  console.log(str);
-  list.innerHTML = str;
+    list.innerHTML = str;
+
+/*使用文档碎片的办法，可以减少页面渲染，提高性能*/
+/*var liFragment = document.createDocumentFragment();
+for(var i = 1;i <= len;i++){
+  var li = document.createElement('li');
+  var text = document.createTextNode('第' + i + '名: ' + newData[i-1]);
+  li.appendChild(text);
+  liFragment.appendChild(li);
+}
+list.appendChild(liFragment);//会产生页面渲染*/
 
 })();
-
+//http://www.zhangxinxu.com/wordpress/2013/04/es5%E6%96%B0%E5%A2%9E%E6%95%B0%E7%BB%84%E6%96%B9%E6%B3%95/
+//ES5中新增的Array方法详细说明
 </script>
 </body>
 </html>
