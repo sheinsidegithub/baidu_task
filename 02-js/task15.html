@@ -70,7 +70,7 @@ function getData() {
  */
 function sortAqiData(data) {
   return data.sort(function(num1,num2){
-    return num1[1]-num2[1];
+    return parseInt(num1[1])-parseInt(num2[1]);
   });
 }
 //sortAqiData(getData());
