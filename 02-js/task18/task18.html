@@ -44,13 +44,18 @@
       return inp.value;
     }
   }
+  function delElement(e){
+      var target = e.srcElement || e.target;
+      target.remove();
+      var elm = target.innerHTML;
+      var index = array.indexOf(elm);
+      array.splice(index,1);
+  }
   rightIn.onclick=function(){
     if(getValue()){
       console.log(array.push(getValue()));
     }
-      
     render();
-    
   }
   rightOut.onclick=function(){
     alert(array.pop());
@@ -67,7 +72,7 @@
     alert(array.shift());
     render();
   }
-  
+  document.getElementById('queue').addEventListener('click',delElement)
 </script>
 </body>
 </html>
