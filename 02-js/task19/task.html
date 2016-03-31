@@ -7,7 +7,8 @@
     #inp{display: block;margin-bottom: 10px;}
     button{display: inline-block;margin-right:10px; }
     span{padding: 10px;background-color: #f00;color: #fff;display: inline-block;margin-right: 5px;}
-    #queue{margin-top: 10px;}
+    #queue{margin-top: 20px;}
+    #chart_wrap{margin-top: 20px;}
     </style>
   </head>
 <body>
@@ -25,27 +26,58 @@
 <div id="queue">
   <!-- <span>1</span><span>2</span><span>34</span> -->
 </div>
-<div>
+<div id="chart_wrap">
+  <button id="btn_display"style="display:block;margin-bottom: 10px;">显示图表</button>
+  <div id="chart"></div>
+</div>
+<div style="margin-top:20px;">
   <button id="btn_sort">sort</button>
 </div>
 
 <script type="text/javascript">
+ var $ = function(ele){
+  return document.querySelector(ele)
+ }
+ console.log($('#chart'));
+
   var inp = document.getElementById('inp');
   var queue = document.getElementById('queue');
   var leftIn = document.getElementById('left_in');
   var rightIn = document.getElementById('right_in');
   var leftOut = document.getElementById('left_out');
   var rightOut = document.getElementById('right_out');
-  var btnSort = document.getElementById('btn_sort');
+  
   var array = [];
   var flag = true;
-  
+  function random(){
+    return parseInt(Math.random()*100);
+  }
   function render(){
     var items=""
     for(var i=0;i<array.length;i++){
-      items+='<span onclick="">'+array[i]+'</span>'
+      items+='<span>'+array[i]+'</span>'
     }
     queue.innerHTML=items;  
+  }
+  function display_chart(display){
+    var spanFragment = document.createDocumentFragment();
+    for(var i=0;i<array.length;i++){
+      var spanNode = document.createElement('span');
+      var NodeText = document.createTextNode(array[i]);
+      spanNode.appendChild(NodeText);
+      spanNode.style.backgroundColor="#3"+random();
+      spanNode.style.height = array[i] + 'px';
+      spanFragment.appendChild(spanNode);
+    }
+    //console.log(spanFragment)
+    if(!display.innerHTML){
+      display.appendChild(spanFragment);
+    }else{
+      display.innerHTML = '';
+      display.appendChild(spanFragment);
+    }
+    
+    //$('#chart').appendChild(spanFragment);
   }
   function getValue(){
     if(!(/^([1-9]\d|100)$/.test(inp.value))){
@@ -76,6 +108,7 @@
   }
 
   rightIn.onclick=function(){
+    flag = true;
     if(getValue()){
       limitArray(array); 
     }
@@ -98,11 +131,38 @@
     alert(array.shift());
     render();
   }
-  document.getElementById('queue').addEventListener('click',delElement)
+  function sort_array(){
+    /*array.sort(function(num1,num2){
+      return num1 - num2//从小到大
+      //return num2 - num1 //从大到小
+    });*/
+    //array = [0,5,2,3,6,9,8]
+    for(var i=0;i<array.length;i++){//从小到大
+      for(var j=0;j<array.length - i;j++){
+        if(array[j]>array[j+1]){
+          text = array[j+1];
+          array[j+1] = array[j];
+          array[j] = text;
+        }
+      }
+    }
+    render();
+    display_chart($('#chart'));
+    //console.log(array);
+  }
 
-  function sort_array(){}
-  btnSort.addEventListener('click',sort_array);
- 
+  $('#queue').addEventListener('click',delElement);
+  $('#chart').addEventListener('click',delElement);
+
+  $('#btn_sort').addEventListener('click',sort_array);
+  $('#btn_display').onclick=function(){
+    display_chart($('#chart'))
+  }
+
+  
+
+  
+ //$('#chart').appendChild()
 </script>
 </body>
 </html>
