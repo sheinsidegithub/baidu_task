@@ -1,0 +1,78 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+    <style type="text/css">
+    #inp{display: block;margin-bottom: 10px;}
+    button{display: inline-block;margin-right:10px; }
+    span{padding: 10px;background-color: #f00;color: #fff;display: inline-block;margin-right: 5px;}
+    #queue{margin-top: 10px;}
+    </style>
+  </head>
+<body>
+<div>
+  <input id="inp" type="text" />
+  <button id="left_in">左侧入</button><button id="right_in">右侧入</button><button id="left_out">左侧出</button><button id="right_out">右侧出</button>
+  
+</div>
+<div id="queue">
+  <!-- <span>1</span><span>2</span><span>34</span> -->
+</div>
+
+<script type="text/javascript">
+  var inp = document.getElementById('inp');
+  var queue = document.getElementById('queue');
+  var leftIn = document.getElementById('left_in');
+  var rightIn = document.getElementById('right_in');
+  var leftOut = document.getElementById('left_out');
+  var rightOut = document.getElementById('right_out');
+  var array = [];
+  function render(){
+    var items=""
+    for(var i=0;i<array.length;i++){
+      items+='<span>'+array[i]+'</span>'
+    }
+    queue.innerHTML=items;  
+  }
+  function getValue(){
+    if(!(/^\d+$/.test(inp.value))){
+      alert('请输入数字');
+      inp.focus();
+      return;
+    }else{
+      return inp.value;
+    }
+  }
+  function delElement(e){
+      var target = e.srcElement || e.target;
+      target.remove();
+      var elm = target.innerHTML;
+      var index = array.indexOf(elm);
+      array.splice(index,1);
+  }
+  rightIn.onclick=function(){
+    if(getValue()){
+      console.log(array.push(getValue()));
+    }
+    render();
+  }
+  rightOut.onclick=function(){
+    alert(array.pop());
+    render();
+  }
+  
+  leftIn.onclick=function(){
+    if(getValue()){
+      console.log(array.unshift(getValue()));
+    }
+    render();
+  }
+  leftOut.onclick=function(){
+    alert(array.shift());
+    render();
+  }
+  document.getElementById('queue').addEventListener('click',delElement)
+</script>
+</body>
+</html>
