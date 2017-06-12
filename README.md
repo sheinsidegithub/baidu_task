@@ -14,3 +14,4 @@
 (2)typeof操作符测试变量的数据类型，括号可以不用写，
 
 
+http://yeyangmei.github.io/baidu_task/02-js/task13/task13.html
